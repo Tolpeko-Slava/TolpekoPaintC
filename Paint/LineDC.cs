@@ -7,13 +7,13 @@ using System.Drawing;
 
 namespace Paint
 {
-    public class LineDC
+    public class LineDC : Figur
     {
-        public LineDC() { }
+        public LineDC(Graphics grap, Pen pen, Color FillColor) : base(grap, pen, FillColor) { }
 
-        public  void DLine(Pen PedLin, Graphics graphics, PointF StartDraw, PointF EndDraw) 
+        public void Draw()
         {
-            graphics.DrawLine(PedLin, StartDraw.X, StartDraw.Y, EndDraw.X, EndDraw.Y);
+            GrapDraw.DrawLine(DPen, StartDraw.X, StartDraw.Y, EndDraw.X, EndDraw.Y);
         }
     }
 }

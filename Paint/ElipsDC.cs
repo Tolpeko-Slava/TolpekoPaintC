@@ -7,15 +7,21 @@ using System.Drawing;
 
 namespace Paint
 {
-    public class ElipsDC
+    public class ElipsDC : Figur
     {
-        public ElipsDC() { }
+        private Point Start = new Point(440, 200);
+        private Point End = new Point(700, 300);
 
-        public void DElips(Pen PenElip, Brush ElipBrut, Graphics graphics, PointF StartDraw, PointF EndDraw)
+        public ElipsDC(Graphics grap, Pen pen, Color FillColor) : base(grap, pen, FillColor) { }
+
+        public void Draw()
         {
-            Rectangle EllipRect = new Rectangle((int)StartDraw.X, (int)StartDraw.Y, (int)(EndDraw.X-StartDraw.X), (int)(EndDraw.Y-StartDraw.Y));
-            graphics.DrawEllipse(PenElip, EllipRect);
-            graphics.FillEllipse(ElipBrut, EllipRect);
+            SolidBrush Brush = new SolidBrush(FillDrawColor);
+            StartPoint = Start;
+            EndPoint = End;
+            Rectangle EllipRect = new Rectangle((int)StartPoint.X, (int)StartPoint.Y, (int)(EndPoint.X - StartPoint.X), (int)(EndPoint.Y - StartPoint.Y));
+            GrapDraw.DrawEllipse(DPen, EllipRect);
+            GrapDraw.FillEllipse(Brush, EllipRect);
         }
     }
 }

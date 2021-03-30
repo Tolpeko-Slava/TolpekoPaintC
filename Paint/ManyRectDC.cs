@@ -7,17 +7,21 @@ using System.Drawing;
 
 namespace Paint
 {
-    class ManyRectDC
+    class ManyRectDC:Figur
     {
-        public ManyRectDC() { }
+        private Point Start = new Point(400, 100);
+        private Point End = new Point(700, 500);
+        public ManyRectDC(Graphics grap, Pen pen, Color FillColor) : base(grap, pen, FillColor) { }
 
-        public void DManyRect(Pen PenManRec, Brush ManRecBrut, Graphics graphics, PointF StartDraw, PointF EndDraw)
+        public void Draw()
         {
-            int LinX,LinY,CenterX,CenterY;
-            LinX = (int)(Math.Abs(EndDraw.X - StartDraw.X)) / 2;
-            LinY = (int)(Math.Abs(EndDraw.Y - StartDraw.Y)) / 2;
-            CenterX = (int)(StartDraw.X + LinX);
-            CenterY = (int)(StartDraw.Y + LinY);
+            StartPoint = Start;
+            EndPoint = End;
+            int LinX, LinY, CenterX, CenterY;
+            LinX = (int)(Math.Abs(EndPoint.X - StartPoint.X)) / 2;
+            LinY = (int)(Math.Abs(EndPoint.Y - StartPoint.Y)) / 2;
+            CenterX = (int)(StartPoint.X + LinX);
+            CenterY = (int)(StartPoint.Y + LinY);
             int Kol = 5;
             double Mout = Math.PI * 2 / Kol;
 
@@ -30,9 +34,10 @@ namespace Paint
                 PolygPointer[i].Y = (int)(CenterY + Math.Sin(i * Mout) * LinY);
 
             }
+            SolidBrush Brush = new SolidBrush(FillDrawColor);
 
-            graphics.DrawPolygon(PenManRec, PolygPointer);
-            graphics.FillPolygon(ManRecBrut, PolygPointer);
+            GrapDraw.DrawPolygon(DPen, PolygPointer);
+            GrapDraw.FillPolygon(Brush, PolygPointer);
         }
 
     }

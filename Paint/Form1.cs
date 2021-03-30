@@ -12,13 +12,12 @@ namespace Paint
 {
     public partial class Form1 : Form
     {
-
         private Color MyColor = Color.Black;
         private Color MyFullColor = Color.White;
-        private PointF StartPoint, EndPoint;
         private float MyWenPen { get; set; }
-       //private Pen DrawPed;
-       // private SolidBrush DrawBrush;
+        private Point StartP, EndP;
+        //private Pen DrawPed;
+        // private SolidBrush DrawBrush;
 
         public Form1()
         {
@@ -26,68 +25,71 @@ namespace Paint
             //PenAndBrush();
         }
 
-       // private void PenAndBrush()
-       // {
-       //     Pen Ped = new Pen(MyColor, MyWenPen);
-       //     SolidBrush Brush = new SolidBrush(MyFullColor);
-       //     DrawPed = Ped;
-       //     DrawBrush = Brush;
-       // }
+        // private void PenAndBrush()
+        // {
+        //     Pen Ped = new Pen(MyColor, MyWenPen);
+        //     SolidBrush Brush = new SolidBrush(MyFullColor);
+        //     DrawPed = Ped;
+        //     DrawBrush = Brush;
+        // }
 
-    
+
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            Graphics grap = e.Graphics;
+            grap.ScaleTransform(1.0f,1.0f);
+            grap.TranslateTransform(0, 0);
+        }
 
         private void LineButt_Click(object sender, EventArgs e)
         {
-            LineDC lin = new LineDC();
+            StartP.X = 100;
+            StartP.Y = 50;
+            EndP.X = 500;
+            EndP.Y = 300;
             Pen Ped = new Pen(MyColor, MyWenPen);
-            StartPoint.X = 100;
-            StartPoint.Y = 200;
-            EndPoint.X = 500;
-            EndPoint.Y = 100;
-            lin.DLine(Ped, pictureBox1.CreateGraphics(), StartPoint,EndPoint);
+            Figur figura = new Figur(pictureBox1.CreateGraphics(), Ped, MyFullColor,StartP,EndP);
+            LineDC Line = new LineDC(pictureBox1.CreateGraphics(), Ped, MyFullColor);
+            Line.Draw();
         }
 
         private void RectButt_Click(object sender, EventArgs e)
         {
-            RectDC Rec = new RectDC();
             Pen Ped = new Pen(MyColor, MyWenPen);
-            SolidBrush Brush = new SolidBrush(MyFullColor);
-            StartPoint.X = 100;
-            StartPoint.Y = 200;
-            EndPoint.X = 500;
-            EndPoint.Y = 700;
-            Rec.DRec(Ped, Brush, pictureBox1.CreateGraphics(), StartPoint, EndPoint);
+            RectDC Rect = new RectDC(pictureBox1.CreateGraphics(), Ped, MyFullColor);
+            Rect.Draw();
         }
 
         private void ElipsButt_Click(object sender, EventArgs e)
         {
-            ElipsDC Elip = new ElipsDC();
             Pen Ped = new Pen(MyColor, MyWenPen);
-            SolidBrush Brush = new SolidBrush(MyFullColor);
-            StartPoint.X = 400;
-            StartPoint.Y = 200;
-            EndPoint.X = 700;
-            EndPoint.Y = 300;
-            Elip.DElips(Ped, Brush, pictureBox1.CreateGraphics(), StartPoint, EndPoint);
+            ElipsDC Elip = new ElipsDC(pictureBox1.CreateGraphics(), Ped, MyFullColor);
+            Elip.Draw();
         }
 
         private void ManyLineButt_Click(object sender, EventArgs e)
         {
-            LineDC lin = new LineDC();
             Pen Ped = new Pen(MyColor, MyWenPen);
-
-            StartPoint.X = 50;
-            StartPoint.Y = 50;
-            EndPoint.X = 500;
-            EndPoint.Y = 100;
+            LineDC Line = new LineDC(pictureBox1.CreateGraphics(), Ped, MyFullColor);
+            StartP.X = 50;
+            StartP.Y = 50;
+            Figura.StartPoint = StartP;
+            EndP.X = 500;
+            EndP.Y = 100;
+            Figura.EndPoint = EndP;
             int i = 1;
             while (i < 3)
             {
-                lin.DLine(Ped, pictureBox1.CreateGraphics(), StartPoint, EndPoint);
-                StartPoint.X = 500;
-                StartPoint.Y = 100;
-                EndPoint.X = 700;
-                EndPoint.Y = 300;
+                Line.Draw();
+                StartP.X = 500;
+                StartP.Y = 100;
+                EndP.X = 700;
+                EndP.Y = 300;
+                Figura.StartPoint = StartP;
+                Figura.EndPoint = EndP;
                 i = i + 1;
             }
         }
@@ -95,14 +97,8 @@ namespace Paint
         private void ManyRectButt_Click(object sender, EventArgs e)
         {
             Pen Ped = new Pen(MyColor, MyWenPen);
-            SolidBrush Brush = new SolidBrush(MyFullColor);
-            ManyRectDC ManRec = new ManyRectDC();
-            StartPoint.X = 400;
-            StartPoint.Y = 500;
-            EndPoint.X = 700;
-            EndPoint.Y = 700;
-            ManRec.DManyRect(Ped, Brush, pictureBox1.CreateGraphics(), StartPoint, EndPoint);
-
+            ManyRectDC ManRec = new ManyRectDC(pictureBox1.CreateGraphics(), Ped, MyFullColor);
+            ManRec.Draw();
         }
 
 

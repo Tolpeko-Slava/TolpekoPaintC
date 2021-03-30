@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ElipsDC.cs" />
+    <Compile Include="Figur.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
