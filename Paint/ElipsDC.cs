@@ -9,19 +9,26 @@ namespace Paint
 {
     public class ElipsDC : Figur
     {
-        private Point Start = new Point(440, 200);
-        private Point End = new Point(700, 300);
+        public ElipsDC(Point StartPoin,Point EndPoin,Graphics grap, Pen pen, Color FillColor) : base(StartPoin,EndPoin,grap, pen, FillColor) { }
 
-        public ElipsDC(Graphics grap, Pen pen, Color FillColor) : base(grap, pen, FillColor) { }
-
-        public void Draw()
+        public override void Draw()
         {
-            SolidBrush Brush = new SolidBrush(FillDrawColor);
-            StartPoint = Start;
-            EndPoint = End;
-            Rectangle EllipRect = new Rectangle((int)StartPoint.X, (int)StartPoint.Y, (int)(EndPoint.X - StartPoint.X), (int)(EndPoint.Y - StartPoint.Y));
-            GrapDraw.DrawEllipse(DPen, EllipRect);
-            GrapDraw.FillEllipse(Brush, EllipRect);
+            if (EndDraw != RemovePoint)
+            {
+                SolidBrush Brush = new SolidBrush(FillDrawColor);
+                Rectangle EllipRect = new Rectangle(StartPoint.X, StartPoint.Y, EndPoint.X - StartPoint.X, EndPoint.Y - StartPoint.Y);
+                GrapDraw.DrawEllipse(DPen, EllipRect);
+                GrapDraw.FillEllipse(Brush, EllipRect);
+            }
+            StartDraw = EndDraw = RemovePoint;
+        }
+    }
+
+    public class ElipsCread: IFigur
+    {
+        public Figur Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush)
+        {
+            return new ElipsDC(Star, Endin, gr, pen, FBrush);
         }
     }
 }

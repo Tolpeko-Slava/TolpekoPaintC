@@ -7,18 +7,23 @@ using System.Drawing;
 
 namespace Paint
 {
-    public class Figur
+    public abstract class Figur
     {
         public Pen DPen;
         public Color FillDrawColor;
         public Graphics GrapDraw;
         protected Point StartDraw, EndDraw;
-
-        public Figur(Graphics gr, Pen p, Color FColor)
+        public bool EndManyLine = false;
+        public Point RemovePoint = new Point (-1,-1);
+        public int Up;
+        
+        public Figur(Point Start,Point End,Graphics gr, Pen p, Color FColor)
         {
             FillDrawColor = FColor;
             DPen = p;
             GrapDraw = gr;
+            StartPoint = Start;
+            EndPoint = End;
         }
 
         public virtual Point StartPoint
@@ -32,5 +37,11 @@ namespace Paint
             get { return EndDraw; }
             set { EndDraw = value; }
         }
+
+        public virtual void Draw()
+        {
+            GrapDraw.DrawLine(DPen, StartDraw.X, StartDraw.Y, EndDraw.X, EndDraw.Y);
+        }
+
     }
 }

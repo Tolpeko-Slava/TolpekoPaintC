@@ -7,21 +7,41 @@ using System.Drawing;
 
 namespace Paint
 {
-    public class RectDC:Figur
+    public class RectDC : Figur
     {
-        private Point Start = new Point(440, 200);
-        private Point End = new Point(700, 300);
+        public RectDC(Point StartPoin, Point EndPoin, Graphics grap, Pen pen, Color FillColor) : base(StartPoin, EndPoin, grap, pen, FillColor) { }
 
-        public RectDC(Graphics grap, Pen pen, Color FillColor) : base(grap, pen, FillColor) { }
-
-        public void Draw()
+        public override void Draw()
         {
-            SolidBrush Brush = new SolidBrush(FillDrawColor);
-            StartPoint = Start;
-            EndPoint = End;
-            Rectangle RectRect = new Rectangle((int)StartDraw.X, (int)StartDraw.Y, (int)EndDraw.X, (int)EndDraw.Y);
-            GrapDraw.DrawRectangle(DPen, RectRect);
-            GrapDraw.FillRectangle(Brush, RectRect);
+            if (EndDraw != RemovePoint)
+            {
+                Point Repun = new Point(0, 0);
+                if (EndDraw.X < StartDraw.X)
+                {
+                    Repun.X = StartDraw.X;
+                    StartDraw.X = EndDraw.X;
+                    EndDraw.X = Repun.X;
+                }
+                if (EndDraw.Y < StartDraw.Y)
+                {
+                    Repun.Y = StartDraw.Y;
+                    StartDraw.Y = EndDraw.Y;
+                    EndDraw.Y = Repun.Y;
+                }
+                SolidBrush Brush = new SolidBrush(FillDrawColor);
+                Rectangle RectRect = new Rectangle(StartDraw.X, StartDraw.Y, EndDraw.X - StartDraw.X, EndDraw.Y - StartDraw.Y);
+                GrapDraw.DrawRectangle(DPen, RectRect);
+                GrapDraw.FillRectangle(Brush, RectRect);
+            }
+            StartDraw = EndDraw = RemovePoint;
+        }
+    }
+
+    public class RectCread : IFigur
+    {
+        public Figur Cread(Point Star,Point Endin, Graphics gr, Pen pen, Color FBrush)
+        {
+            return new RectDC(Star, Endin, gr, pen, FBrush);
         }
     }
 }
