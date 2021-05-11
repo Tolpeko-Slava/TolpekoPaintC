@@ -9,19 +9,30 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Runtime;
+using System.IO;
 
 namespace Paint
 {
     public partial class Form1 : Form
     {
+        UndoRedo FigureBack = new UndoRedo();
+        //  IFigur CurrentFigure = null;
         private Color MyColor = Color.Black;
         private Color MyFullColor = Color.White;
         private float MyWenPen { get; set; }
         private Pen MyPen = new Pen(Color.Black, 1);
         private Point StartP, EndP=new Point (-1,-1);
+        Bitmap MainPicture = new Bitmap(1000, 1000), TemporaryImage = new Bitmap(1000, 1000);
+        LinkedList<IFigur> Creators = new LinkedList<IFigur>();
+       // IFigurRemov CurrentFigure = null;
+        private Graphics Graph;
         bool IsClicked;
         bool ClickManyRect=false;
         private int Up { get; set; }
+
+
+        IRemov Last;
+
 
         // IFigur CreadFigur;
         Figur Figura;
@@ -105,6 +116,12 @@ namespace Paint
             ClickManyRect=true;
         }
 
+        private void ButtUseRect_Click(object sender, EventArgs e)
+        {
+            UserManyRectCread UserManyRectCreding = new UserManyRectCread { };
+            Figura = UserManyRectCreding.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
+        }
+
 
 
         private void ColorButt_Click(object sender, EventArgs e)
@@ -135,10 +152,97 @@ namespace Paint
             if(ClickManyRect)
             {
                 (Figura as ManyRectDC).Kol = (int)NumberUp.Value;
-                ClickManyRect = false;
+                //ClickManyRect = false;
             }  
             //ManyRectCraed ManyRectCreading = new ManyRectCraed { };
             //Figura = ManyRectCreading.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
+        }
+
+        private void ButtSave_Click(object sender, EventArgs e)
+        {
+            /*  SaveFileDialog SavFal = new SaveFileDialog();
+              SavFal.Title = "Сохранить картинку как...";
+              SavFal.OverwritePrompt = true;
+              SavFal.CheckPathExists = true;
+              SavFal.Filter = "Image Files (*.BMP)|*.BMP|Image Files (*.JPG)|*.JPG|Image Files (*.GIF)|*.GIF|" +
+                  "Image Files (*.PNG)|*.PNG|ALL files(*.*)|*.*";
+              SavFal.ShowHelp = true;
+
+              if (SavFal.ShowDialog() == DialogResult.OK)
+              {
+                  try
+                  {
+                      pictureBox1.Image.Save("SaveFal.FileName");
+                  }
+                  catch
+                  {
+                      MessageBox.Show("Cannot create output file!");
+                  }
+              }*/
+        }
+
+        private void ButtLoad_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ButtRemove_Click(object sender, EventArgs e)
+        {
+
+
+
+
+
+
+      /*      int N = FigureBack.KolElem;
+            if (N <= 0)
+                return;
+            if (FigureBack == null)
+                FigureBack = new UndoRedo();
+
+
+            IFigurRemov Last = FigureBack.Element(0);
+
+            Last.EndOfCurrentFigure = true;
+            FigureBack.Push(Last);
+            FigureBack.Pop();
+
+
+            ButtMove.Enabled = true;
+
+            Graph = Graphics.FromImage(MainPicture);
+            Graph.Clear(pictureBox1.BackColor);
+
+            FigureBack.DrawRemov(Graph);
+
+
+            pictureBox1.Image = MainPicture;
+
+            if (FigureBack.KolElem <= 0)
+                ButtRemove.Enabled = false;
+
+            */
+
+            //IFigur CurrentCreator = Creators.ElementAt<IFigur>(1);
+         //   CurrentFigure = CurrentCreator.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
+          //  -1, -1, gr, pen, FillColorPanel.BackColor
+          //  Figura = ManyLineCreding.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
+        }
+
+        private void ButtMove_Click(object sender, EventArgs e)
+        {
+          /*  IFigurRemov tmp = FigureBack.Pop();
+            gr = Graphics.FromImage(MainPicture);
+            tmp.DrawPanel = gr;
+            tmp.Redraw();
+            FigureBack.Push(tmp);
+            UndoButton.Enabled = true;
+            pictureBox1.Image = MainPicture;
+            gr.Dispose();
+            if (FigureBack.Count == 0)
+            {
+                RedoButton.Enabled = false;
+            }*/
         }
 
         private void FullUserButt_Click(object sender, EventArgs e)

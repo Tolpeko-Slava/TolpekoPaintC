@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfes", "Interfes.csproj", "{F5E89CDC-B8F4-4C99-B1C1-6E9ED5E1609F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5E89CDC-B8F4-4C99-B1C1-6E9ED5E1609F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5E89CDC-B8F4-4C99-B1C1-6E9ED5E1609F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5E89CDC-B8F4-4C99-B1C1-6E9ED5E1609F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5E89CDC-B8F4-4C99-B1C1-6E9ED5E1609F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57E5AB32-0C99-44D4-9362-A25022681803}
+	EndGlobalSection
+EndGlobal

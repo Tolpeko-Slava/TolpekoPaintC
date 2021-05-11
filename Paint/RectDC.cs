@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+//using Interfes;
 
 namespace Paint
 {
@@ -35,10 +36,45 @@ namespace Paint
             }
             StartDraw = EndDraw = RemovePoint;
         }
+
+       /*  public override IFigurRemov Clone()
+         {
+            RectDC NewFig = new RectDC(StartDraw, EndDraw, GrapDraw, DPen, FillDrawColor);
+            NewFig.EndPoint = new Point(this.EndDraw.X, this.EndDraw.Y);
+            NewFig.EndOfCurrentFigure = this.EndOfCurrentFigure;
+            return NewFig;
+           // Rectangle NewF = new Rectangle(StartDraw, EndDraw, GrapDraw, (Pen)DPen.Clone(), FillDrawColor);
+           //  return NewF;
+         }*/
+
+        public override void Redraw()
+        {
+            if (EndDraw != RemovePoint)
+            {
+                Point Repun = new Point(0, 0);
+                if (EndDraw.X < StartDraw.X)
+                {
+                    Repun.X = StartDraw.X;
+                    StartDraw.X = EndDraw.X;
+                    EndDraw.X = Repun.X;
+                }
+                if (EndDraw.Y < StartDraw.Y)
+                {
+                    Repun.Y = StartDraw.Y;
+                    StartDraw.Y = EndDraw.Y;
+                    EndDraw.Y = Repun.Y;
+                }
+                SolidBrush Brush = new SolidBrush(FillDrawColor);
+                Rectangle RectRect = new Rectangle(StartDraw.X, StartDraw.Y, EndDraw.X - StartDraw.X, EndDraw.Y - StartDraw.Y);
+                GrapDraw.DrawRectangle(DPen, RectRect);
+                GrapDraw.FillRectangle(Brush, RectRect);
+            }
+        }
     }
 
     public class RectCread : IFigur
     {
+
         public Figur Cread(Point Star,Point Endin, Graphics gr, Pen pen, Color FBrush)
         {
             return new RectDC(Star, Endin, gr, pen, FBrush);

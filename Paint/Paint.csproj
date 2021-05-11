@@ -55,12 +55,15 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="IFigur.cs" />
+    <Compile Include="IFigurRemov.cs" />
     <Compile Include="LineDC.cs" />
     <Compile Include="ManyLineDC.cs" />
     <Compile Include="ManyRectDC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RectDC.cs" />
+    <Compile Include="UndoRedo.cs" />
+    <Compile Include="UserManyRectDC.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

@@ -11,8 +11,8 @@ namespace Paint
     class ManyRectDC:Figur
     {
         public ManyRectDC(Point StartPoin, Point EndPoin, Graphics grap, Pen pen, Color FillColor) : base(StartPoin, EndPoin, grap, pen, FillColor) { }
-
-        private int KolUp;
+        private Point RemovePoint = new Point(-1, -1);
+        private int KolUp = 3;
         public int Kol
         {
             get { return KolUp; }
@@ -21,7 +21,7 @@ namespace Paint
 
         public override void Draw()
         {
-            //int Kol=3;
+           // int Kol=3;
            // Kol = NumberUp;
             if (EndDraw != RemovePoint)
             {
