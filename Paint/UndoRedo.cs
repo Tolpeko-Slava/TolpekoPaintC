@@ -7,12 +7,13 @@ using System.Drawing;
 
 namespace Paint
 {
+   // [Serializable]
     public class UndoRedo
     {
         private Stack<IFigurRemov> Remov;
-        private int n = 0;
+        protected int n = 0;
         public int KolElem { get { return n; } }
-        private Graphics gr;
+        protected Graphics gr;
 
 
         public UndoRedo(){
@@ -31,7 +32,7 @@ namespace Paint
         {
             try
             {
-         //       Remov.Push(F.Clone());
+                Remov.Push(F.Clone());
                 n++;
                 return true;
             }
@@ -62,18 +63,18 @@ namespace Paint
             {
                 ObjRem = this.Element(k);
                 ObjRem.GrapDraw = gr;
-               // ObjRem.Redraw();
+                ObjRem.Redraw();
             }
             return true;
         }
 
-        public bool LastEnd()
+        public bool CanDraw()
         {
             if (Remov.Count <= 0)
                 return false;
-            bool res;
-            res = Remov.ElementAt<IFigurRemov>(0).EndOfCurrentFigure;
-            return res;
+            bool EndF;
+            EndF = Remov.ElementAt<IFigurRemov>(0).EndFigur;
+            return EndF;
 
         }
     }

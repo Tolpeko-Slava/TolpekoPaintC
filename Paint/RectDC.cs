@@ -8,49 +8,18 @@ using System.Drawing;
 
 namespace Paint
 {
+    [Serializable]
     public class RectDC : Figur
     {
         public RectDC(Point StartPoin, Point EndPoin, Graphics grap, Pen pen, Color FillColor) : base(StartPoin, EndPoin, grap, pen, FillColor) { }
 
         public override void Draw()
         {
-            if (EndDraw != RemovePoint)
-            {
-                Point Repun = new Point(0, 0);
-                if (EndDraw.X < StartDraw.X)
-                {
-                    Repun.X = StartDraw.X;
-                    StartDraw.X = EndDraw.X;
-                    EndDraw.X = Repun.X;
-                }
-                if (EndDraw.Y < StartDraw.Y)
-                {
-                    Repun.Y = StartDraw.Y;
-                    StartDraw.Y = EndDraw.Y;
-                    EndDraw.Y = Repun.Y;
-                }
-                SolidBrush Brush = new SolidBrush(FillDrawColor);
-                Rectangle RectRect = new Rectangle(StartDraw.X, StartDraw.Y, EndDraw.X - StartDraw.X, EndDraw.Y - StartDraw.Y);
-                GrapDraw.DrawRectangle(DPen, RectRect);
-                GrapDraw.FillRectangle(Brush, RectRect);
-            }
-            StartDraw = EndDraw = RemovePoint;
+            this.Redraw();
         }
-
-       /*  public override IFigurRemov Clone()
-         {
-            RectDC NewFig = new RectDC(StartDraw, EndDraw, GrapDraw, DPen, FillDrawColor);
-            NewFig.EndPoint = new Point(this.EndDraw.X, this.EndDraw.Y);
-            NewFig.EndOfCurrentFigure = this.EndOfCurrentFigure;
-            return NewFig;
-           // Rectangle NewF = new Rectangle(StartDraw, EndDraw, GrapDraw, (Pen)DPen.Clone(), FillDrawColor);
-           //  return NewF;
-         }*/
 
         public override void Redraw()
         {
-            if (EndDraw != RemovePoint)
-            {
                 Point Repun = new Point(0, 0);
                 if (EndDraw.X < StartDraw.X)
                 {
@@ -68,8 +37,16 @@ namespace Paint
                 Rectangle RectRect = new Rectangle(StartDraw.X, StartDraw.Y, EndDraw.X - StartDraw.X, EndDraw.Y - StartDraw.Y);
                 GrapDraw.DrawRectangle(DPen, RectRect);
                 GrapDraw.FillRectangle(Brush, RectRect);
-            }
+            //StartDraw = EndDraw = RemovePoint;
         }
+
+        public override IFigurRemov Clone()
+        {
+            RectDC NewF = new RectDC(StartDraw, EndDraw, GrapDraw, (Pen)DPen.Clone(), FillDrawColor);
+            NewF.EndFigur = true;
+            return NewF;
+        }
+
     }
 
     public class RectCread : IFigur

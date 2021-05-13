@@ -10,29 +10,26 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Runtime;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Paint
 {
     public partial class Form1 : Form
     {
-        UndoRedo FigureBack = new UndoRedo();
-        //  IFigur CurrentFigure = null;
+        UndoRedo FigureBack = new UndoRedo(), FigureGo = null;
         private Color MyColor = Color.Black;
         private Color MyFullColor = Color.White;
         private float MyWenPen { get; set; }
         private Pen MyPen = new Pen(Color.Black, 1);
         private Point StartP, EndP=new Point (-1,-1);
-        Bitmap MainPicture = new Bitmap(1000, 1000), TemporaryImage = new Bitmap(1000, 1000);
-        LinkedList<IFigur> Creators = new LinkedList<IFigur>();
-       // IFigurRemov CurrentFigure = null;
-        private Graphics Graph;
+        Graphics Graph;
+        LinkedList<IFigur> Plagins = new LinkedList<IFigur>();
+        Bitmap MainPicture = new Bitmap(730, 500);
+       // LinkedList<IFigur> Creators = new LinkedList<IFigur>();
         bool IsClicked;
         bool ClickManyRect=false;
         private int Up { get; set; }
-
-
-        IRemov Last;
-
+        int PlaginElement = 0;
 
         // IFigur CreadFigur;
         Figur Figura;
@@ -43,7 +40,7 @@ namespace Paint
 
             LineCread lineCreding = new LineCread { };
             Figura = lineCreding.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
-
+           // ButtRemove.Enabled = false;
             //ManyRectCraed ManyRectCreading = new ManyRectCraed { };
             //FiguraRigth = ManyRectCreading.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
         }
@@ -82,6 +79,26 @@ namespace Paint
             if (e.Button == MouseButtons.Right)
                 Figura.EndManyLine = true;
             Figura.Draw();
+
+            if (FigureBack.KolElem < 1)
+            {
+                FigureBack.Push(Figura);
+                ButtRemove.Enabled = true;
+            }
+            else
+            {
+                if (FigureBack.CanDraw())
+                {
+                    FigureBack.Push(Figura);
+                }
+                else
+                {
+                    FigureBack.Pop();
+                    FigureBack.Push(Figura);
+                }
+            }
+          //  Figura.EndFigur = false;
+            ButtRemove.Enabled = true;
         }
 
         private void LineButt_Click(object sender, EventArgs e)
@@ -145,6 +162,8 @@ namespace Paint
         private void ClearButt_Click(object sender, EventArgs e)
         {
             pictureBox1.Image = null;
+            ButtRemove.Enabled = false;
+            FigureBack = new UndoRedo();
         }
 
         private void NumberUp_ValueChanged(object sender, EventArgs e)
@@ -160,89 +179,137 @@ namespace Paint
 
         private void ButtSave_Click(object sender, EventArgs e)
         {
-            /*  SaveFileDialog SavFal = new SaveFileDialog();
-              SavFal.Title = "Сохранить картинку как...";
-              SavFal.OverwritePrompt = true;
-              SavFal.CheckPathExists = true;
-              SavFal.Filter = "Image Files (*.BMP)|*.BMP|Image Files (*.JPG)|*.JPG|Image Files (*.GIF)|*.GIF|" +
-                  "Image Files (*.PNG)|*.PNG|ALL files(*.*)|*.*";
-              SavFal.ShowHelp = true;
-
-              if (SavFal.ShowDialog() == DialogResult.OK)
-              {
-                  try
-                  {
-                      pictureBox1.Image.Save("SaveFal.FileName");
-                  }
-                  catch
-                  {
-                      MessageBox.Show("Cannot create output file!");
-                  }
-              }*/
+            openFileDialog1.CheckFileExists = false;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string path = openFileDialog1.FileName;
+                FileStream F = File.Open(path, FileMode.Create);
+                try
+                {
+                    StreamWriter st = new StreamWriter(F);
+                    JsonSerializerSettings settings = new JsonSerializerSettings();
+                    settings.TypeNameHandling = TypeNameHandling.All;
+                    for (int i = FigureBack.KolElem - 1; i >= 0; i--)
+                    {
+                        IFigurRemov Tmp = FigureBack.Element(i);
+                        try
+                        {
+                            //Tmp.EndOfCurrentFigure = true;
+                            string json = JsonConvert.SerializeObject(Tmp, Tmp.GetType(), settings);
+                            st.WriteLine(json);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            break;
+                        }
+                    }
+                    st.Close();
+                }
+                finally
+                {
+                    F.Close();
+                }
+            }
         }
 
         private void ButtLoad_Click(object sender, EventArgs e)
         {
+            openFileDialog1.CheckFileExists = true;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string path = openFileDialog1.FileName;
+                FileStream F = File.Open(path, FileMode.Open);
+                if (F == null)
+                {
+                    MessageBox.Show("Cannot open this file!");
+                    return;
+                }
+                try
+                {
+                    ClearButt_Click(null, null);
 
+                    StreamReader st = new StreamReader(F);
+                    JsonSerializerSettings settings = new JsonSerializerSettings();
+                    settings.TypeNameHandling = TypeNameHandling.All;
+                    IFigurRemov Tmp;
+                    string json = st.ReadLine();
+                    int i = 0;
+                    while (json != null)
+                    {
+                        try
+                        {
+                            Tmp = (IFigurRemov)JsonConvert.DeserializeObject(json, settings);
+                            FigureBack.Push(Tmp);
+                        }
+                        catch (Exception ex)
+                        {
+                            string type = json.Substring(json.IndexOf(':'), json.IndexOf(','));
+                            MessageBox.Show("Error on line " + i.ToString() + ". Cannot read this Figure:" + type);
+
+                        }
+
+                        i++;
+                        json = st.ReadLine();
+                    }
+                    Graph = Graphics.FromImage(MainPicture);
+                    Graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    FigureBack.DrawRemov(Graph);
+                    pictureBox1.Image = MainPicture;
+                    st.Close();
+                    ButtRemove.Enabled = true;
+                }
+                finally
+                {
+                    F.Close();
+                }
+            }
+        }
+
+        private void ButtLoadPlagin_Click(object sender, EventArgs e)
+        {
+            if (openPlaginDialog1.ShowDialog() == DialogResult.OK)
+            {
+
+            
+            }
         }
 
         private void ButtRemove_Click(object sender, EventArgs e)
         {
-
-
-
-
-
-
-      /*      int N = FigureBack.KolElem;
+            int N = FigureBack.KolElem;
             if (N <= 0)
                 return;
-            if (FigureBack == null)
-                FigureBack = new UndoRedo();
-
-
+            if (FigureGo == null)
+                FigureGo = new UndoRedo();
             IFigurRemov Last = FigureBack.Element(0);
-
-            Last.EndOfCurrentFigure = true;
-            FigureBack.Push(Last);
+          //  Last.EndOfCurrentFigure = true;
+            FigureGo.Push(Last);
             FigureBack.Pop();
-
-
             ButtMove.Enabled = true;
-
             Graph = Graphics.FromImage(MainPicture);
             Graph.Clear(pictureBox1.BackColor);
-
             FigureBack.DrawRemov(Graph);
-
-
+           // FigureBack.Push(Last);
             pictureBox1.Image = MainPicture;
-
             if (FigureBack.KolElem <= 0)
                 ButtRemove.Enabled = false;
-
-            */
-
-            //IFigur CurrentCreator = Creators.ElementAt<IFigur>(1);
-         //   CurrentFigure = CurrentCreator.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
-          //  -1, -1, gr, pen, FillColorPanel.BackColor
-          //  Figura = ManyLineCreding.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
         }
 
         private void ButtMove_Click(object sender, EventArgs e)
         {
-          /*  IFigurRemov tmp = FigureBack.Pop();
-            gr = Graphics.FromImage(MainPicture);
-            tmp.DrawPanel = gr;
-            tmp.Redraw();
-            FigureBack.Push(tmp);
-            UndoButton.Enabled = true;
+            IFigurRemov Mov = FigureGo.Pop();
+            Graph = Graphics.FromImage(MainPicture);
+            Mov.GrapDraw = Graph;
+            Mov.Redraw();
+            FigureBack.Push(Mov);
+            ButtRemove.Enabled = true;
             pictureBox1.Image = MainPicture;
-            gr.Dispose();
-            if (FigureBack.Count == 0)
+            Graph.Dispose();
+            if (FigureGo.KolElem == 0)
             {
-                RedoButton.Enabled = false;
-            }*/
+                ButtMove.Enabled = false;
+            }
         }
 
         private void FullUserButt_Click(object sender, EventArgs e)

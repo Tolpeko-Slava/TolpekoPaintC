@@ -45,6 +45,10 @@
             this.ButtLoad = new System.Windows.Forms.Button();
             this.ButtRemove = new System.Windows.Forms.Button();
             this.ButtMove = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.ButtLoadPlagin = new System.Windows.Forms.Button();
+            this.openPlaginDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumInputUser)).BeginInit();
@@ -273,11 +277,39 @@
             this.ButtMove.UseVisualStyleBackColor = true;
             this.ButtMove.Click += new System.EventHandler(this.ButtMove_Click);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // ButtLoadPlagin
+            // 
+            this.ButtLoadPlagin.Location = new System.Drawing.Point(741, 156);
+            this.ButtLoadPlagin.Name = "ButtLoadPlagin";
+            this.ButtLoadPlagin.Size = new System.Drawing.Size(70, 23);
+            this.ButtLoadPlagin.TabIndex = 8;
+            this.ButtLoadPlagin.Text = "LoadPlagin";
+            this.ButtLoadPlagin.UseVisualStyleBackColor = true;
+            this.ButtLoadPlagin.Click += new System.EventHandler(this.ButtLoadPlagin_Click);
+            // 
+            // openPlaginDialog1
+            // 
+            this.openPlaginDialog1.FileName = "openPlaginDialog1";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(741, 185);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(96, 21);
+            this.comboBox1.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(817, 561);
+            this.ClientSize = new System.Drawing.Size(838, 561);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.ButtLoadPlagin);
             this.Controls.Add(this.ButtMove);
             this.Controls.Add(this.ButtRemove);
             this.Controls.Add(this.ButtLoad);
@@ -316,6 +348,10 @@
         private System.Windows.Forms.Button ButtLoad;
         private System.Windows.Forms.Button ButtRemove;
         private System.Windows.Forms.Button ButtMove;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button ButtLoadPlagin;
+        private System.Windows.Forms.OpenFileDialog openPlaginDialog1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace Interfes
+namespace Trapez
 {
     public interface IFigurRemov
     {
@@ -16,13 +16,8 @@ namespace Interfes
         Pen DPen { get; set; }
         Color PenColor { get; set; }
         float PenWidth { get; set; }
-        bool EndOfCurrentFigure { get; set; }
+        bool EndFigur { get; set; }
         IFigurRemov Clone();
         void Redraw();
-    }
-
-    public interface IFigur
-    {
-        IFigurRemov Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush);
     }
 }
