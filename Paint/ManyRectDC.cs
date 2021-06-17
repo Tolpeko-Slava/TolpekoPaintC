@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using InterfesV;
 
 namespace Paint
 {
     [Serializable]
     class ManyRectDC:Figur
     {
+        private Point Pounters = new Point(-1, -1);
+
         public ManyRectDC(Point StartPoin, Point EndPoin, Graphics grap, Pen pen, Color FillColor) : base(StartPoin, EndPoin, grap, pen, FillColor) { }
-        private Point RemovePoint = new Point(-1, -1);
+        //private Point RemovePoint = new Point(-1, -1);
         private int KolUp = 3;
         public int Kol
         {
@@ -21,10 +24,10 @@ namespace Paint
 
         public override void Draw()
         {
-            // int Kol=3;
-            // Kol = NumberUp;
-            //Uper = Up;
-            this.Redraw();
+            if (EndPoint != Pounters)
+            {
+                this.Redraw();
+            }
         }
 
         public override void Redraw()
@@ -64,7 +67,7 @@ namespace Paint
 
     public class ManyRectCraed: IFigur
     {
-        public Figur Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush)
+        public IFigurRemov Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush)
         {
             return new ManyRectDC(Star, Endin, gr, pen, FBrush);
         }

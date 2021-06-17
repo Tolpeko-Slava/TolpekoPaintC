@@ -5,12 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
-//using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace Paint
+namespace InterfesV
 {
-    /*
+    public interface IFigurRemov
+    {
+        Point StartPoint { get; set; }
+        Point EndPoint { get; set; }
+        Color FillColor { get; set; }
+        Graphics GrapDraw { get; set; }
+        Pen DPen { get; set; }
+        Color PenColor { get; set; }
+        float PenWidth { get; set; }
+        bool EndFigur { get; set; }
+        IFigurRemov Clone();
+        void Redraw();
+        void Draw();
+    }
+
+    public interface IFigur
+    {
+        IFigurRemov Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush);
+    }
+
     [Serializable]
     public abstract class Figur : IFigurRemov
     {
@@ -128,9 +146,8 @@ namespace Paint
 
         public bool EndFigur
         {
-            get{return EndDrawFigur;}
-            set{ EndDrawFigur = value;}
+            get { return EndDrawFigur; }
+            set { EndDrawFigur = value; }
         }
     }
-    */
 }

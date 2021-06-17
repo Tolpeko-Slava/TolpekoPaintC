@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime;
 using System.IO;
 using Newtonsoft.Json;
+using InterfesV;
 
 namespace Paint
 {
@@ -21,28 +22,23 @@ namespace Paint
         private Color MyFullColor = Color.White;
         private float MyWenPen { get; set; }
         private Pen MyPen = new Pen(Color.Black, 1);
-        private Point StartP, EndP=new Point (-1,-1);
+        private Point StartP, EndP = new Point(-1, -1);
         Graphics Graph;
-        LinkedList<IFigur> Plagins = new LinkedList<IFigur>();
         Bitmap MainPicture = new Bitmap(730, 500);
-       // LinkedList<IFigur> Creators = new LinkedList<IFigur>();
         bool IsClicked;
         bool ClickManyRect=false;
-        private int Up { get; set; }
-        int PlaginElement = 0;
-
-        // IFigur CreadFigur;
-        Figur Figura;
+        private Point Pounters = new Point(-1, -1);
+        IFigurRemov Figura;
 
         public Form1()
         {
             InitializeComponent();
 
+            ButtRemove.Enabled = false;
+            ButtMove.Enabled = false;
+
             LineCread lineCreding = new LineCread { };
             Figura = lineCreding.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
-           // ButtRemove.Enabled = false;
-            //ManyRectCraed ManyRectCreading = new ManyRectCraed { };
-            //FiguraRigth = ManyRectCreading.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -69,7 +65,6 @@ namespace Paint
                 EndP.X = e.X;
                 EndP.Y = e.Y;
                 Figura.EndPoint = EndP;
-                //pictureBox1.Invalidate();
             }
         }
 
@@ -77,8 +72,10 @@ namespace Paint
         {
             IsClicked = false;
             if (e.Button == MouseButtons.Right)
-                Figura.EndManyLine = true;
+                Figura.EndFigur = true;
             Figura.Draw();
+
+          
 
             if (FigureBack.KolElem < 1)
             {
@@ -97,7 +94,10 @@ namespace Paint
                     FigureBack.Push(Figura);
                 }
             }
-          //  Figura.EndFigur = false;
+            if (Figura.EndFigur == true)
+            {
+                Figura.EndPoint = Pounters;
+            }
             ButtRemove.Enabled = true;
         }
 
@@ -163,6 +163,7 @@ namespace Paint
         {
             pictureBox1.Image = null;
             ButtRemove.Enabled = false;
+            ButtMove.Enabled = false;
             FigureBack = new UndoRedo();
         }
 
@@ -171,10 +172,8 @@ namespace Paint
             if(ClickManyRect)
             {
                 (Figura as ManyRectDC).Kol = (int)NumberUp.Value;
-                //ClickManyRect = false;
+                
             }  
-            //ManyRectCraed ManyRectCreading = new ManyRectCraed { };
-            //Figura = ManyRectCreading.Cread(StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor);
         }
 
         private void ButtSave_Click(object sender, EventArgs e)
@@ -194,7 +193,6 @@ namespace Paint
                         IFigurRemov Tmp = FigureBack.Element(i);
                         try
                         {
-                            //Tmp.EndOfCurrentFigure = true;
                             string json = JsonConvert.SerializeObject(Tmp, Tmp.GetType(), settings);
                             st.WriteLine(json);
                         }
@@ -242,7 +240,7 @@ namespace Paint
                             Tmp = (IFigurRemov)JsonConvert.DeserializeObject(json, settings);
                             FigureBack.Push(Tmp);
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             string type = json.Substring(json.IndexOf(':'), json.IndexOf(','));
                             MessageBox.Show("Error on line " + i.ToString() + ". Cannot read this Figure:" + type);
@@ -266,14 +264,6 @@ namespace Paint
             }
         }
 
-        private void ButtLoadPlagin_Click(object sender, EventArgs e)
-        {
-            if (openPlaginDialog1.ShowDialog() == DialogResult.OK)
-            {
-
-            
-            }
-        }
 
         private void ButtRemove_Click(object sender, EventArgs e)
         {
@@ -283,18 +273,17 @@ namespace Paint
             if (FigureGo == null)
                 FigureGo = new UndoRedo();
             IFigurRemov Last = FigureBack.Element(0);
-          //  Last.EndOfCurrentFigure = true;
             FigureGo.Push(Last);
             FigureBack.Pop();
             ButtMove.Enabled = true;
             Graph = Graphics.FromImage(MainPicture);
             Graph.Clear(pictureBox1.BackColor);
             FigureBack.DrawRemov(Graph);
-           // FigureBack.Push(Last);
             pictureBox1.Image = MainPicture;
             if (FigureBack.KolElem <= 0)
                 ButtRemove.Enabled = false;
         }
+
 
         private void ButtMove_Click(object sender, EventArgs e)
         {
@@ -319,8 +308,72 @@ namespace Paint
             if (MyDialog.ShowDialog() == DialogResult.Cancel)
                 return;
             MyFullColor = MyDialog.Color;
-            Figura.FillDrawColor = MyFullColor;
+            Figura.FillColor = MyFullColor;
         }
+
+
+
+        public static List<Type> pluginsList = new List<Type>();
+
+        //Плагины 
+        private void ButtAddPlagin_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDown dropDown = new ToolStripDropDown();
+
+            toolStrip.DropDown = dropDown;
+            toolStrip.DropDownDirection = ToolStripDropDownDirection.Right;
+            toolStrip.ShowDropDownArrow = true;
+
+            var dlgFileOpen = new OpenFileDialog();
+            dlgFileOpen.Filter = @"File dll (*.dll)|*.dll";
+
+            if (dlgFileOpen.ShowDialog() == DialogResult.OK)
+            {
+                string filename = dlgFileOpen.FileName;
+
+                Assembly assembly = Assembly.LoadFrom(filename);
+                Type[] t = assembly.GetTypes();
+
+              //  Object instance = Activator.CreateInstance(t[1]);
+         //       Type types = assembly.GetType();
+                string str = t[1].FullName.ToString();
+                string[] MasStr = str.Split('.');
+
+
+                ToolStripButton buttPlagin = new ToolStripButton();
+                buttPlagin.Text = MasStr[0];
+                buttPlagin.ForeColor = Color.Blue;
+                pluginsList.Add(t[1]);
+                buttPlagin.Click += new EventHandler(ButtonDrawPlag);
+                toolStrip.DropDown.Items.Add(buttPlagin);
+            }
+        }
+
+
+        private void ButtonDrawPlag(object sender, EventArgs e)
+        {
+            int SelectIndex = 0;
+            for(int i =0; i< toolStrip.DropDownItems.Count; i++)
+            {
+                if(toolStrip.DropDownItems[i].Selected)
+                {
+                    SelectIndex = i;
+                    break;
+                }
+            }
+
+            Type FObject = pluginsList.ElementAt(SelectIndex);
+
+            object[] Parametrer = new object[] { StartP, EndP, pictureBox1.CreateGraphics(), MyPen, MyFullColor };
+            Object instance = Activator.CreateInstance(FObject);
+            MethodInfo CreadPlag = FObject.GetMethod("Cread");
+
+            Figura = (IFigurRemov)CreadPlag.Invoke(instance, Parametrer);
+
+
+           // Figura = pluginsList.ElementAt(SelectIndex);
+        }
+
     }
 
 }

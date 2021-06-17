@@ -5,15 +5,62 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
-//using System.Xml.Serialization;
 using Newtonsoft.Json;
+using InterfesV;
 
-namespace Paint
+namespace TrapezV
 {
-    /*
     [Serializable]
-    public abstract class Figur : IFigurRemov
+    public class Trapez : IFigurRemov
     {
+        private Point Pounters = new Point(-1, -1);
+
+        public Trapez(Point StartPoin, Point EndPoin, Graphics grap, Pen pen, Color FillColor) 
+        {
+            StartDraw = StartPoin;
+            EndDraw = EndPoin;
+            DPen = pen;
+            GrapDraw = grap;
+            FillDrawColor = FillColor;
+        }
+
+        public IFigurRemov Clone()
+        {
+            Trapez NewF = new Trapez(StartDraw, EndDraw, GrapDraw, (Pen)DPen.Clone(), FillDrawColor);
+            NewF.EndFigur = true;
+            return NewF;
+        }
+
+        public void Draw()
+        {
+            if (EndPoint != Pounters)
+            {
+                this.Redraw();
+            }
+        }
+
+        public void Redraw()
+        {
+
+            Point[] points = new Point[4];
+            int r = (int)(EndDraw.X - StartDraw.X) / 2;
+
+            var center = new PointF(StartDraw.X + r, StartDraw.Y + r);
+            points[0] = StartDraw;
+            points[1] = new Point(StartDraw.X + r, StartDraw.Y);
+            points[2] = EndDraw;
+            points[3] = new Point(EndDraw.X - r - (int)(2 * r), EndDraw.Y);
+
+
+            var brush = new SolidBrush(FillDrawColor);
+
+            GrapDraw.DrawPolygon(DPen, points);
+            GrapDraw.FillPolygon(brush, points);
+
+            //  brush.Dispose();
+
+        }
+
         // protected Pen DPen;
         protected Pen DrPen;
         protected Point StartDraw, EndDraw;
@@ -23,8 +70,8 @@ namespace Paint
         protected Color penColor;
         bool EndDrawFigur = false;
         public Color FillColor { get; set; }
-        public Point RemovePoint = new Point(-1, -1);
-        public int Up;
+        //  public Point RemovePoint = new Point(-1, -1);
+        // public int Up;
 
 
         public Color FillDrawColor { get; set; }
@@ -36,15 +83,6 @@ namespace Paint
             { return DrPcael; }
             set
             { DrPcael = value; }
-        }
-
-        public Figur(Point Start, Point End, Graphics gr, Pen p, Color FColor)
-        {
-            FillDrawColor = FColor;
-            DPen = p;
-            GrapDraw = gr;
-            StartPoint = Start;
-            EndPoint = End;
         }
 
         public float PenWidth
@@ -98,15 +136,7 @@ namespace Paint
 
         }
 
-        public virtual IFigurRemov Clone()
-        {
-            return null;
-
-        }
-
         public virtual bool OnePointBack() { return false; }
-        public virtual void Redraw()
-        { }
 
 
         public virtual Point StartPoint
@@ -121,16 +151,19 @@ namespace Paint
             set { EndDraw = value; }
         }
 
-        public virtual void Draw()
-        {
-            GrapDraw.DrawLine(DPen, StartDraw.X, StartDraw.Y, EndDraw.X, EndDraw.Y);
-        }
-
         public bool EndFigur
         {
-            get{return EndDrawFigur;}
-            set{ EndDrawFigur = value;}
+            get { return EndDrawFigur; }
+            set { EndDrawFigur = value; }
+        }
+
+    }
+
+    public class Creator : IFigur
+    {
+        public  IFigurRemov Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color Fc)
+        {
+            return new Trapez(Star, Endin, gr, pen, Fc);
         }
     }
-    */
 }

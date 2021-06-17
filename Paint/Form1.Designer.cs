@@ -46,13 +46,15 @@
             this.ButtRemove = new System.Windows.Forms.Button();
             this.ButtMove = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.ButtLoadPlagin = new System.Windows.Forms.Button();
-            this.openPlaginDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.ButtAddPlagin = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.toolStripMenu = new System.Windows.Forms.ToolStrip();
+            this.toolStrip = new System.Windows.Forms.ToolStripDropDownButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumInputUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumberUp)).BeginInit();
+            this.toolStripMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -281,50 +283,69 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // ButtLoadPlagin
+            // ButtAddPlagin
             // 
-            this.ButtLoadPlagin.Location = new System.Drawing.Point(741, 156);
-            this.ButtLoadPlagin.Name = "ButtLoadPlagin";
-            this.ButtLoadPlagin.Size = new System.Drawing.Size(70, 23);
-            this.ButtLoadPlagin.TabIndex = 8;
-            this.ButtLoadPlagin.Text = "LoadPlagin";
-            this.ButtLoadPlagin.UseVisualStyleBackColor = true;
-            this.ButtLoadPlagin.Click += new System.EventHandler(this.ButtLoadPlagin_Click);
+            this.ButtAddPlagin.Location = new System.Drawing.Point(741, 156);
+            this.ButtAddPlagin.Name = "ButtAddPlagin";
+            this.ButtAddPlagin.Size = new System.Drawing.Size(75, 23);
+            this.ButtAddPlagin.TabIndex = 9;
+            this.ButtAddPlagin.Text = "LoadPlagin";
+            this.ButtAddPlagin.UseVisualStyleBackColor = true;
+            this.ButtAddPlagin.Click += new System.EventHandler(this.ButtAddPlagin_Click);
             // 
-            // openPlaginDialog1
+            // button1
             // 
-            this.openPlaginDialog1.FileName = "openPlaginDialog1";
+            this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
             // 
-            // comboBox1
+            // toolStripMenu
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(741, 185);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(96, 21);
-            this.comboBox1.TabIndex = 9;
+            this.toolStripMenu.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStrip});
+            this.toolStripMenu.Location = new System.Drawing.Point(741, 182);
+            this.toolStripMenu.Name = "toolStripMenu";
+            this.toolStripMenu.Size = new System.Drawing.Size(73, 25);
+            this.toolStripMenu.TabIndex = 12;
+            this.toolStripMenu.Text = "toolStrip1";
+            // 
+            // toolStrip
+            // 
+            this.toolStrip.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(70, 22);
+            this.toolStrip.Text = "Плагины";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 561);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.ButtLoadPlagin);
+            this.ClientSize = new System.Drawing.Size(847, 561);
+            this.Controls.Add(this.toolStripMenu);
+            this.Controls.Add(this.ButtAddPlagin);
             this.Controls.Add(this.ButtMove);
             this.Controls.Add(this.ButtRemove);
             this.Controls.Add(this.ButtLoad);
             this.Controls.Add(this.ButtSave);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.pictureBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Paint";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.NumInputUser)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumberUp)).EndInit();
+            this.toolStripMenu.ResumeLayout(false);
+            this.toolStripMenu.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -349,9 +370,10 @@
         private System.Windows.Forms.Button ButtRemove;
         private System.Windows.Forms.Button ButtMove;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button ButtLoadPlagin;
-        private System.Windows.Forms.OpenFileDialog openPlaginDialog1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button ButtAddPlagin;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStrip toolStripMenu;
+        private System.Windows.Forms.ToolStripDropDownButton toolStrip;
     }
 }
 

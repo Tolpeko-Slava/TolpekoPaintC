@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using InterfesV;
 
 namespace Paint
 {
     [Serializable]
     class UserManyRectDC : Figur
     {
+        private Point Pounters = new Point(-1, -1);
+
         public UserManyRectDC(Point StartPoin, Point EndPoin, Graphics grap, Pen pen, Color FillColor) : base(StartPoin, EndPoin, grap, pen, FillColor) { }
         private int Num = 0;
         private int i = 0;
@@ -19,43 +22,46 @@ namespace Paint
 
         public override void Draw()
         {
-            if (EndDraw != RemovePoint)
+            if (EndPoint != Pounters)
             {
-                SolidBrush Brush = new SolidBrush(FillDrawColor);
-                if (i == 0)
+                if (EndDraw != RemovePoint)
                 {
-                    points = new LinkedList<Point>();
-                    points.AddLast(StartDraw);
-                    Cycle = StartDraw;
+                    SolidBrush Brush = new SolidBrush(FillDrawColor);
+                    if (i == 0)
+                    {
+                        points = new LinkedList<Point>();
+                        points.AddLast(StartDraw);
+                        Cycle = StartDraw;
+                        i = i + 1;
+                        points.AddLast(EndDraw);
+                        points.AddLast(Cycle);
+                    }
+
+                    if (Num > 0)
+                    {
+                        EndDraw = StartDraw;
+                        points.RemoveLast();
+                        points.AddLast(EndDraw);
+                        points.AddLast(Cycle);
+                    }
+
+                    GrapDraw.DrawLine(DPen, points.ElementAt<Point>(i - 1), points.ElementAt<Point>(i));
                     i = i + 1;
-                    points.AddLast(EndDraw);
-                    points.AddLast(Cycle);
-                }
+                    flag = false;
+                    Num = Num + 1;
 
-                if (Num > 0)
-                {
-                    EndDraw = StartDraw;
-                    points.RemoveLast();
-                    points.AddLast(EndDraw);
-                    points.AddLast(Cycle);
-                }
-
-                GrapDraw.DrawLine(DPen, points.ElementAt<Point>(i - 1), points.ElementAt<Point>(i));
-                i = i + 1;
-                flag = false;
-                Num = Num + 1;
-
-                if (EndManyLine)
-                {
-                    GrapDraw.DrawPolygon(DPen, points.ToArray());
-                    GrapDraw.FillPolygon(Brush, points.ToArray());
-                    EndManyLine = false;
-                    Num = 0;
-                    i = 0;
-                    StartDraw = EndDraw = RemovePoint;
-                    Brush.Dispose();
-                    StartDraw = EndDraw = RemovePoint;
-                    flag = true;
+                    if (EndFigur)
+                    {
+                        GrapDraw.DrawPolygon(DPen, points.ToArray());
+                        GrapDraw.FillPolygon(Brush, points.ToArray());
+                        EndManyLine = false;
+                        Num = 0;
+                        i = 0;
+                        StartDraw = EndDraw = RemovePoint;
+                        Brush.Dispose();
+                        StartDraw = EndDraw = RemovePoint;
+                        flag = true;
+                    }
                 }
             }
         }
@@ -83,7 +89,7 @@ namespace Paint
 
     public class UserManyRectCread : IFigur
     {
-        public Figur Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush)
+        public IFigurRemov Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush)
         {
             return new UserManyRectDC(Star, Endin, gr, pen, FBrush);
         }

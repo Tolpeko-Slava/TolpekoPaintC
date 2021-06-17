@@ -7,8 +7,10 @@ using System.Drawing;
 
 namespace Paint
 {
+   /*
     public interface IFigur
     {
-        Figur Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush);
+        IFigurRemov Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush);
     }
+   */
 }

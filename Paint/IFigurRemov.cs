@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace Paint
 {
+    /*
     public interface IFigurRemov
     {
         Point StartPoint { get; set; }
@@ -19,5 +20,7 @@ namespace Paint
         bool EndFigur { get; set; }
         IFigurRemov Clone();
         void Redraw();
+        void Draw();
     }
+    */
 }

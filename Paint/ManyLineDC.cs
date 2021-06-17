@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using InterfesV;
 
 
 namespace Paint
@@ -46,7 +47,7 @@ namespace Paint
 
                 Num = Num + 1;
 
-                if (EndManyLine)
+                if (EndFigur)
                 {
                     EndManyLine = false;
                     Num = 0;
@@ -71,22 +72,23 @@ namespace Paint
 
         public override void Redraw()
         {
-            int N = points.Count;
-            if (N > 1)
-            {
-                for (int i = 0; i < N - 1; i++)
-                {
-                    GrapDraw.DrawLine(DrPen, points.ElementAt<Point>(i), points.ElementAt<Point>(i + 1));
-                }
 
-            }
+                int N = points.Count;
+                if (N > 1)
+                {
+                    for (int i = 0; i < N - 1; i++)
+                    {
+                        GrapDraw.DrawLine(DrPen, points.ElementAt<Point>(i), points.ElementAt<Point>(i + 1));
+                    }
+
+                }
         }
 
     }
 
     public class ManyLineCread : IFigur
     {
-        public Figur Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush)
+        public IFigurRemov Cread(Point Star, Point Endin, Graphics gr, Pen pen, Color FBrush)
         {
             return new ManyLineDC(Star, Endin, gr, pen, FBrush);
         }
